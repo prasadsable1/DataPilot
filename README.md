@@ -104,6 +104,17 @@ After cloning the repository, open PowerShell in its root folder and run:
 
 The script creates a backend virtual environment and installs missing dependencies, then opens separate windows for the API and frontend. On first run, it creates `backend\.env` from the example and stops so you can configure MySQL; run the script again after MySQL is ready. Keep both launched windows open while using the app.
 
+## Free public demo on Render
+
+The repository includes a Render Blueprint in `render.yaml` for a public static frontend and free FastAPI service. To deploy:
+
+1. Create a Render account and connect the public GitHub repository `prasadsable1/DataPilot`.
+2. In Render, choose **New → Blueprint**, select the repository and `master` branch, then apply `render.yaml`.
+3. Before the API can start, create or provide a reachable MySQL-compatible database; Render's free database offering is PostgreSQL, which this app does not support. Enter the database host, port, name, username, and password in the API service's environment settings. Do not put credentials in GitHub.
+4. Wait for both services to deploy. The default frontend URL is `https://datapilot-web.onrender.com`; the API URL is `https://datapilot-api.onrender.com`.
+
+This free configuration is a demo, not durable hosting: Render's free API service can sleep while idle and its local files are ephemeral. Uploaded dataset files can disappear after sleep, restart, or redeploy. The database and file storage must not contain private or important data. The app also uses a browser-session identifier rather than real user authentication. For reliable use, add authentication and durable private file storage and choose hosting that supports them.
+
 ## Tests and checks
 
 Backend tests use an in-memory fake metadata session and temporary files so they do not need MySQL credentials. They exercise real FastAPI routes and file/analytics behavior:

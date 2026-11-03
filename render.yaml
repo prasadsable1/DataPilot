@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: datapilot-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: FRONTEND_ORIGINS
+        value: https://datapilot-web.onrender.com
+      - key: DATA_STORAGE_DIR
+        value: /tmp/datapilot-storage
+      - key: MYSQL_HOST
+        sync: false
+      - key: MYSQL_PORT
+        sync: false
+      - key: MYSQL_DATABASE
+        sync: false
+      - key: MYSQL_USER
+        sync: false
+      - key: MYSQL_PASSWORD
+        sync: false
+
+  - type: web
+    name: datapilot-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://datapilot-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
