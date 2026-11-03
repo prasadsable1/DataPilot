@@ -111,7 +111,7 @@ The repository includes a Render Blueprint in `render.yaml` for a public static 
 1. Create a Render account and connect the public GitHub repository `prasadsable1/DataPilot`.
 2. In Render, choose **New → Blueprint**, select the repository and `master` branch, then apply `render.yaml`.
 3. Apply the Blueprint as configured. The demo API uses SQLite at `/tmp/datapilot.db`, so it does not require an external database or database credentials.
-4. Wait for both services to deploy. Open the public URL shown on the `datapilot-web` static site in Render. Render may add a suffix if a service name is already in use; the Blueprint wires the actual assigned API and frontend URLs together automatically.
+4. Wait for both services to deploy. Open the public URL shown on the `datapilot-web` static site in Render. Render may add a suffix if a service name is already in use; the Blueprint uses the actual API URL and configures CORS for the current frontend URL.
 
 This free configuration is a demo, not durable hosting: Render's free API service can sleep while idle and its local files are ephemeral. SQLite metadata and uploaded dataset files can disappear after sleep, restart, or redeploy. Do not upload private or important data. The app also uses a browser-session identifier rather than real user authentication. For reliable use, add authentication and durable private file storage and choose hosting that supports them.
 
