@@ -2,7 +2,7 @@
 ## 📸 Application Preview
 
 <div align="center">
-  <img src="Screenshot 2026-11-03 234642" width="100%" alt="DataPilot Homepage">
+  <img src="Screenshot 2026-11-03 234642.png" width="100%" alt="DataPilot Homepage">
 
   <br>
   <em>DataPilot — Interactive Data Analytics Platform</em>
