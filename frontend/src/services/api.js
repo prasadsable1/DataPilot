@@ -7,8 +7,13 @@ if (!sessionId) {
   localStorage.setItem(SESSION_KEY, sessionId)
 }
 
+const configuredApiUrl = import.meta.env.VITE_API_URL || '/api'
+const apiBaseUrl = configuredApiUrl.endsWith('/api')
+  ? configuredApiUrl
+  : `${configuredApiUrl.replace(/\/$/, '')}/api`
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: apiBaseUrl,
   timeout: 30000,
   headers: { 'X-Session-ID': sessionId },
 })

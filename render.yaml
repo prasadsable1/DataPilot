@@ -27,7 +27,10 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        value: https://datapilot-api.onrender.com/api
+        fromService:
+          type: web
+          name: datapilot-api
+          envVarKey: RENDER_EXTERNAL_URL
     routes:
       - type: rewrite
         source: /*
