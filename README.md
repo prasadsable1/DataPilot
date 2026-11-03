@@ -94,6 +94,16 @@ npm run dev
 
 Open the Vite URL (normally `http://localhost:5173`). Vite proxies `/api` to `http://127.0.0.1:8000`. If that backend port is already in use, set `DATAPILOT_API_PROXY_TARGET` before starting Vite (for example, `http://127.0.0.1:8001`). For a separately hosted API URL, set `VITE_API_URL` in `frontend\.env.local` (see `frontend\.env.example`).
 
+## One-click local startup (Windows)
+
+After cloning the repository, open PowerShell in its root folder and run:
+
+```powershell
+.\start-datapilot.ps1
+```
+
+The script creates a backend virtual environment and installs missing dependencies, then opens separate windows for the API and frontend. On first run, it creates `backend\.env` from the example and stops so you can configure MySQL; run the script again after MySQL is ready. Keep both launched windows open while using the app.
+
 ## Tests and checks
 
 Backend tests use an in-memory fake metadata session and temporary files so they do not need MySQL credentials. They exercise real FastAPI routes and file/analytics behavior:
