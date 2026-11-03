@@ -18,7 +18,7 @@ DataPilot is a local-first analytics workspace for uploading CSV/XLSX datasets, 
 
 - Frontend: React, Vite, JavaScript, Tailwind CSS v4, React Router, Axios, Recharts, Lucide React.
 - Backend: Python, FastAPI, Pandas, NumPy, SQLAlchemy, PyMySQL, Pydantic.
-- Database: MySQL. SQLite and PostgreSQL are not supported.
+- Database: MySQL for local use; SQLite can be used for temporary, single-instance demo deployments. PostgreSQL is not supported.
 
 ```text
 backend/
@@ -110,10 +110,10 @@ The repository includes a Render Blueprint in `render.yaml` for a public static 
 
 1. Create a Render account and connect the public GitHub repository `prasadsable1/DataPilot`.
 2. In Render, choose **New → Blueprint**, select the repository and `master` branch, then apply `render.yaml`.
-3. Before the API can start, create or provide a reachable MySQL-compatible database; Render's free database offering is PostgreSQL, which this app does not support. Enter the database host, port, name, username, and password in the API service's environment settings. Do not put credentials in GitHub.
+3. Apply the Blueprint as configured. The demo API uses SQLite at `/tmp/datapilot.db`, so it does not require an external database or database credentials.
 4. Wait for both services to deploy. The default frontend URL is `https://datapilot-web.onrender.com`; the API URL is `https://datapilot-api.onrender.com`.
 
-This free configuration is a demo, not durable hosting: Render's free API service can sleep while idle and its local files are ephemeral. Uploaded dataset files can disappear after sleep, restart, or redeploy. The database and file storage must not contain private or important data. The app also uses a browser-session identifier rather than real user authentication. For reliable use, add authentication and durable private file storage and choose hosting that supports them.
+This free configuration is a demo, not durable hosting: Render's free API service can sleep while idle and its local files are ephemeral. SQLite metadata and uploaded dataset files can disappear after sleep, restart, or redeploy. Do not upload private or important data. The app also uses a browser-session identifier rather than real user authentication. For reliable use, add authentication and durable private file storage and choose hosting that supports them.
 
 ## Tests and checks
 
@@ -135,11 +135,11 @@ npm run lint
 ## Data handling and operational notes
 
 - Original uploads are never overwritten by cleaning actions. A CSV working copy is used for preview, cleaning, analysis, and export.
-- MySQL stores dataset records and ownership/session IDs; source and working files live below `DATA_STORAGE_DIR` (default `./storage`, relative to the backend working directory).
+- MySQL stores dataset records and ownership/session IDs for local use; the temporary Render demo uses SQLite. Source and working files live below `DATA_STORAGE_DIR` (default `./storage`, relative to the backend working directory).
 - Back up MySQL and the storage directory as a pair. The owner token is a browser-local random UUID and is not a substitute for authentication.
 - Do not commit `.env` files or uploaded datasets. The root `.gitignore` excludes local secrets and `backend/storage/`.
 - The upload size cap limits source bytes, but datasets still consume memory during Pandas analysis. Tune it for the machine and workload.
-- Before deployment, add real authentication/authorization, rate limiting, structured operational logging, private object storage with lifecycle/backup policies, HTTPS, and a tested MySQL/storage backup plan. Render local disks are not durable by default; Vercel is for the frontend, and a hosted MySQL/storage provider must be selected and configured separately. No deployment or paid service is included.
+- Before production deployment, add real authentication/authorization, rate limiting, structured operational logging, private object storage with lifecycle/backup policies, HTTPS, and a tested database/storage backup plan. Render local disks are not durable by default. No deployment or paid service is included.
 
 ## Possible next steps
 

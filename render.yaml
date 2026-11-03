@@ -16,16 +16,8 @@ services:
         value: https://datapilot-web.onrender.com
       - key: DATA_STORAGE_DIR
         value: /tmp/datapilot-storage
-      - key: MYSQL_HOST
-        sync: false
-      - key: MYSQL_PORT
-        sync: false
-      - key: MYSQL_DATABASE
-        sync: false
-      - key: MYSQL_USER
-        sync: false
-      - key: MYSQL_PASSWORD
-        sync: false
+      - key: DATABASE_URL
+        value: sqlite:////tmp/datapilot.db
 
   - type: web
     name: datapilot-web

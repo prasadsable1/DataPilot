@@ -7,8 +7,9 @@ import pandas as pd
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from sqlalchemy import inspect
 
-from app import routes
+from app import database, routes
 from app.config import Settings
 from app.database import get_db
 from app.routes import router
@@ -67,6 +68,23 @@ def client(tmp_path, monkeypatch):
 
 def headers():
     return {"X-Session-ID": "efa6b087-513e-4ddb-901c-3713aa265b28"}
+
+
+def test_sqlite_database_initializes(tmp_path, monkeypatch):
+    settings = Settings(database_url="sqlite:///:memory:")
+    monkeypatch.setattr(database, "get_settings", lambda: settings)
+    monkeypatch.setattr(database, "engine", None)
+    monkeypatch.setattr(database, "SessionLocal", None)
+    database.initialize_database()
+
+    assert "datasets" in inspect(database.engine).get_table_names()
+
+
+def test_database_url_rejects_unsupported_driver():
+    settings = Settings(database_url="postgresql://localhost/datapilot")
+
+    with pytest.raises(ValueError, match="mysql\\+pymysql or SQLite"):
+        _ = settings.sqlalchemy_url
 
 
 def upload(client, filename="sales.csv", payload=b"Region,Amount,Flag\nEast,10,yes\nEast,,no\nWest,30,yes\nWest,30,yes\n"):

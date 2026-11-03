@@ -25,9 +25,9 @@ class Settings(BaseSettings):
     @property
     def sqlalchemy_url(self) -> str:
         if self.database_url:
-            if not self.database_url.startswith("mysql+pymysql://"):
-                raise ValueError("DATABASE_URL must use the mysql+pymysql driver.")
-            return self.database_url
+            if self.database_url.startswith(("mysql+pymysql://", "sqlite:///")):
+                return self.database_url
+            raise ValueError("DATABASE_URL must use mysql+pymysql or SQLite.")
         if not self.mysql_password:
             raise ValueError("Set DATABASE_URL or MYSQL_PASSWORD in backend/.env.")
         return URL.create(
