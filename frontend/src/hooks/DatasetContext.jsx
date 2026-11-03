@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import api, { errorMessage } from '../services/api'
 import { DatasetContext } from './dataset-context'
 
@@ -60,4 +60,12 @@ export function DatasetProvider({ children }) {
   }), [datasets, selectedId, selectDataset, refresh, removeDataset, loading, error])
 
   return <DatasetContext.Provider value={value}>{children}</DatasetContext.Provider>
+}
+
+export function useDatasets() {
+  const context = useContext(DatasetContext)
+  if (!context) {
+    throw new Error('useDatasets must be used within a DatasetProvider.')
+  }
+  return context
 }
