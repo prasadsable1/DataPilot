@@ -13,7 +13,10 @@ services:
       - key: APP_ENV
         value: production
       - key: FRONTEND_ORIGINS
-        value: https://datapilot-web.onrender.com
+        fromService:
+          type: web
+          name: datapilot-web
+          envVarKey: RENDER_EXTERNAL_URL
       - key: DATA_STORAGE_DIR
         value: /tmp/datapilot-storage
       - key: DATABASE_URL
